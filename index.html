@@ -1,935 +1,1311 @@
 <!DOCTYPE html>
 <html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      SCHOOL COMMERCE – Solusi Inovatif untuk Pendidikan Kewirausahaan Digital
+    </title>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>
-    SCHOOL COMMERCE – Solusi Inovatif untuk Pendidikan Kewirausahaan Digital
-  </title>
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <script>
-    tailwind = window.tailwind || {};
-  </script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: "#0a192f",
-            secondary: "#112240",
-            accent: "#64ffda",
-            light: "#ccd6f6",
-            slate: "#8892b0",
-          },
-          fontFamily: {
-            sans: ["Inter"],
-          },
-          animation: {
-            "fade-in": "fadeIn 0.8s ease-in-out",
-            float: "float 6s ease-in-out infinite",
-            "pulse-slow": "pulse 4s cubic-bezier(0.4,0,0.6,1) infinite",
-          },
-          keyframes: {
-            fadeIn: { "0%": { opacity: "0" }, "100%": { opacity: "1" } },
-            float: {
-              "0%,100%": { transform: "translateY(0)" },
-              "50%": { transform: "translateY(-16px)" },
+    <!-- Tailwind CDN with class-based dark mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script>
+      // Aktifkan mode manual (bukan berdasarkan preferensi OS)
+      tailwind.config = {
+        darkMode: "class",
+      };
+    </script>
+
+    <script>
+      // Script untuk toggle dark/light mode dan menyimpan ke localStorage
+      function toggleTheme() {
+        const html = document.documentElement;
+        if (html.classList.contains("dark")) {
+          html.classList.remove("dark");
+          localStorage.theme = "light";
+        } else {
+          html.classList.add("dark");
+          localStorage.theme = "dark";
+        }
+      }
+
+      // Saat load halaman, cek preferensi dari localStorage
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              primary: "#0a192f",
+              secondary: "#112240",
+              // accent: "#64ffda",
+              accent: "#00bba7",
+              light: "#ccd6f6",
+              slate: "#8892b0",
+            },
+            fontFamily: {
+              sans: ["Inter"],
             },
           },
         },
-      },
-    };
-  </script>
+      };
+    </script>
 
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Font Awesome for icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
 
-  <style>
-    /* Google Fonts */
-    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+    <style>
+      /* Google Fonts */
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
-    html,
-    body {
-      height: 100%;
-      scroll-behavior: smooth !important;
-    }
+      /* --- Global transitions for smooth "fade" effect when theme changes --- */
+      html {
+        transition: background-color 0.45s ease, color 0.45s ease;
+      }
+      body, section, nav, footer, .card-hover-effect, .input-field {
+        transition: background-color 0.45s ease, color 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+      }
 
-    body {
-      font-family: "Inter", sans-serif;
-      background-color: #0a192f;
-      color: #ccd6f6;
-      overflow-x: hidden;
-      scroll-behavior: smooth !important;
-    }
+      html, body {
+        height: 100%;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        color: #ccd6f6;
+        overflow-x: hidden;
+      }
 
-    .gradient-bg {
-      background: linear-gradient(-45deg, #0a192f, #112240, #1a2a4a, #23345a);
-      /* background: linear-gradient(-45deg, #0a192f, #112240, #1a2a4a, #23345a); */
-      background-size: 400% 400%;
-      animation: gradient 20s ease infinite;
-    }
+      /* Dark-mode gradient background (original look) */
+      .gradient-bg {
+        background: linear-gradient(-45deg, #0a192f, #112240, #1a2a4a, #23345a);
+        background-size: 400% 400%;
+      }
 
-    .particle {
-      position: absolute;
-      background: rgba(100, 255, 218, 0.45);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
-    }
+      /* --- Light theme overrides --- */
+      /* When <html> has class "light", override commonly-used utility classes so the existing HTML needs minimal changes */
+      html.light body {
+        background: #f8fafc;
+        color: #0a192f;
+      }
+      html.light .gradient-bg {
+        /* keep it simple and clean for light mode */
+        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+      }
+      html.light .bg-primary { background-color: #ffffff !important; }
+      html.light .bg-secondary { background-color: #e6eef9 !important; }
+      html.light .bg-primary\/60 { background-color: rgba(255,255,255,0.6) !important; }
+      html.light .text-light { color: #0a192f !important; }
+      html.light .text-slate { color: #475569 !important; }
+      html.light .border-slate\/20 { border-color: rgba(71,85,105,0.12) !important; }
+      html.light .bg-accent\/10 { background-color: rgba(100,255,218,0.08) !important; }
+      html.light .input-field {
+        background: rgba(226,232,240,0.6) !important;
+        border: 1px solid rgba(17,34,64,0.08) !important;
+        color: #0a192f !important;
+      }
+      html.light .w-10.h-10.rounded-full.bg-accent { background-color: #64ffda !important; color: #0a192f !important; }
+      html.light a:hover { color: #059669; } subtle hover for links in light mode
 
-    .glow-on-hover {
-      transition: all 0.25s ease;
-    }
+      /* Particles & visual helpers */
+      .particle {
+        position: absolute;
+        background: rgba(100, 255, 218, 0.45);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
 
-    .glow-on-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 30px rgba(100, 255, 218, 0.12);
-    }
+      .glow-on-hover {
+        transition: all 0.25s ease;
+      }
+      .glow-on-hover:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(100, 255, 218, 0.12);
+      }
+      .card-hover-effect {
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+        transform-style: preserve-3d;
+      }
+      .card-hover-effect:hover {
+        transform: translateY(-8px);
+        /* box-shadow: 0 18px 40px rgba(2, 6, 23, 0.6); */
+        box-shadow: 0 18px 40px rgba(100, 255, 218, 0.45);
+      }
 
-    .card-hover-effect {
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      transform-style: preserve-3d;
-    }
+      .input-field {
+        background: rgba(17, 34, 64, 0.6);
+        border: 1px solid rgba(35, 52, 90, 0.6);
+        color: #ccd6f6;
+      }
+      .input-field:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.12);
+        border-color: #64ffda;
+      }
 
-    .card-hover-effect:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 18px 40px rgba(2, 6, 23, 0.6);
-    }
-
-    .input-field {
-      background: rgba(17, 34, 64, 0.6);
-      border: 1px solid rgba(35, 52, 90, 0.6);
-      color: #ccd6f6;
-    }
-
-    .input-field:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.12);
-      border-color: #64ffda;
-    }
-
-    .fade-in-section {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-in-section.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .section-divider {
-      height: 80px;
-      width: 100%;
-      background: linear-gradient(to bottom,
+      .fade-in-section {
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .section-divider {
+        height: 80px;
+        width: 100%;
+        background: linear-gradient(
+          to bottom,
           rgba(10, 25, 47, 0),
-          rgba(10, 25, 47, 1));
-    }
+          rgba(10, 25, 47, 1)
+        );
+      }
+      a:focus {
+        outline: 2px dashed rgba(100, 255, 218, 0.18);
+        outline-offset: 3px;
+      }
 
-    a:focus {
-      outline: 2px dashed rgba(100, 255, 218, 0.18);
-      outline-offset: 3px;
-    }
-  </style>
-</head>
+      /* Small helpers for mobile menu icon spacing */
+      .nav-right-controls { display:flex; align-items:center; gap:0.5rem; }
+    </style>
+  </head>
+  <body class="gradient-bg relative">
 
-<body class="gradient-bg relative">
-  <div id="loader"
-    class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white z-[9999] transition-opacity duration-500"
-    style="opacity: 0; pointer-events: none; display: none;">
-    <div class="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-    <p class="text-lg font-medium text-blue-400">Memuat data...</p>
+    <div id="loader" class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white z-[9999] transition-opacity duration-500">
+      <div class="w-16 h-16 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+      <p class="text-lg font-medium text-teal-400">Memuat data...</p>
   </div>
-
-  <!-- Particles background -->
-  <div id="particles-js" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
-
-  <!-- NAV -->
-  <nav class="relative z-40 py-6 px-4 sm:px-8 lg:px-20">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-accent flex items-center justify-center" aria-hidden="true">
-          <i class="fas fa-shopping-bag text-primary text-lg"></i>
-        </div>
-        <div>
-          <span class="text-light text-2xl font-bold">School<span class="text-accent">Commerce</span></span>
-        </div>
-      </div>
-
-      <div class="hidden md:flex items-center space-x-8 text-slate">
-        <a href="#home" class="hover:text-accent transition">Home</a>
-        <a href="#about" class="hover:text-accent transition">About</a>
-        <a href="#features" class="hover:text-accent transition">Fitur</a>
-        <a href="#how" class="hover:text-accent transition">Cara Kerja</a>
-        <a href="#team" class="hover:text-accent transition">Team</a>
-        <a href="#contact" class="hover:text-accent transition">Contact</a>
-        <a href="#cta" class="ml-3 bg-accent text-primary px-4 py-2 rounded font-medium glow-on-hover">Coba Sekarang</a>
-      </div>
-
-      <!-- Mobile menu button -->
-      <button id="mobileToggle" class="md:hidden text-light" aria-label="Buka menu">
-        <i class="fas fa-bars text-2xl"></i>
-      </button>
-    </div>
-
-    <!-- Mobile menu (hidden by default) -->
-    <div id="mobileMenu" class="hidden md:hidden mt-4 max-w-6xl mx-auto px-2">
-      <div class="bg-secondary/40 rounded-lg p-4 space-y-3 text-slate">
-        <a href="#home" class="block">Home</a>
-        <a href="#about" class="block">About</a>
-        <a href="#features" class="block">Fitur</a>
-        <a href="#how" class="block">Cara Kerja</a>
-        <a href="#team" class="block">Team</a>
-        <a href="#contact" class="block">Contact</a>
-        <a href="#cta" class="block bg-accent text-primary px-4 py-2 rounded mt-2 text-center">Coba Sekarang</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- HERO -->
-  <header id="home"
-    class="relative min-h-screen flex items-center py-12 bg-gradient-to-b from-primary/80 to-primary overflow-hidden">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-4 sm:px-8 lg:px-20 z-10">
-      <div class="fade-in-section order-2 md:order-1">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-1">
-          SOLUSI <span class="text-accent">INOVATIF</span>
-        </h1>
-        <h1 class="text-4xl md:text-4xl lg:text-4xl font-bold leading-tight mb-1">
-          untuk Pendidikan
-        </h1>
-        <h1 class="text-4xl font-bold leading-tight mb-1 text-accent">
-          Kewirausahaan <span class="text-5xl">DIGITAL</span>
-        </h1>
-        </h1>
-        <p class="text-slate text-lg mb-6 max-w-xl">
-          Platform e-commerce berbasis web yang dirancang khusus untuk siswa
-          agar dapat belajar, berwirausaha, dan bertransaksi secara digital
-          dalam lingkungan sekolah yang aman, praktis, dan edukatif.
-        </p>
-        <div class="flex flex-wrap gap-3">
-          <a href="#cta" class="bg-accent text-primary px-6 py-3 rounded font-medium glow-on-hover">Coba Sekarang</a>
-          <a href="#about"
-            class="border border-accent text-accent px-6 py-3 rounded font-medium hover:bg-accent hover:bg-opacity-10 transition">Tentang
-            Kami</a>
-        </div>
-
-        <div class="mt-8 text-slate text-sm max-w-md">
-          <div class="flex items-center space-x-3">
-            <i class="fas fa-check-circle text-accent"></i>
-            <span>Lingkungan transaksi aman, terverifikasi oleh guru</span>
-          </div>
-          <div class="flex items-center space-x-3 mt-3">
-            <i class="fas fa-check-circle text-accent"></i>
-            <span>Pencatatan transaksi otomatis untuk pembelajaran akuntansi
-              sederhana</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="relative">
-        <div class="absolute -top-16 -left-16 w-56 h-56 rounded-full bg-accent/10 blur-3xl"></div>
-        <div
-          class="w-full h-96 bg-primary p-4 rounded-2xl border border-slate/20 overflow-hidden flex items-center justify-center card-hover-effect order-1 md:order-2">
-          <!-- Unsplash placeholder mockup -->
-          <img loading="lazy" src="img/img001.avif" alt="Mockup School Commerce"
-            class="w-full h-full object-cover rounded-md" />
-        </div>
-        <div class="absolute -bottom-6 -left-6 bg-teal-600 text-white p-4 rounded-lg shadow-lg">
-          <div class="text-lg font-bold">Belajar Bisnis,</div>
-          <div class="text-xs">Mulai dari Sekolah!</div>
-        </div>
-        <div class="absolute -bottom-16 -right-16 w-56 h-56 rounded-full bg-accent/10 -z-10 blur-3xl"></div>
-      </div>
-    </div>
-  </header>
-
-  <!-- ABOUT -->
-  <section id="about" class="py-20 px-4 sm:px-8 lg:px-20 bg-[#112240]">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-      <div class="fade-in-section order-2 lg:order-1">
-        <h2 class="text-3xl font-bold text-light mb-4">
-          Apa itu <br><span class="text-accent text-4xl">School Commerce</span> ?
-        </h2>
-        <p class="text-slate mb-4">
-          School Commerce adalah aplikasi e-commerce edukatif berbasis web
-          yang memungkinkan siswa melakukan jual beli produk antar teman di
-          lingkungan sekolah. Dibangun dengan Laravel 12, HTML, CSS, dan
-          JavaScript, aplikasi ini memadukan pembelajaran teori kewirausahaan
-          dengan praktik langsung secara digital dan interaktif.
-        </p>
-        <p class="text-accent font-medium italic">
-          “SCHOOL COMMERCE – Solusi Inovatif untuk Pendidikan Kewirausahaan
-          Digital”
-        </p>
-        <div class="mt-6 flex space-x-3">
-          <a href="#how" class="inline-flex items-center px-4 py-2 bg-accent text-primary rounded">Mulai Belajar</a>
-          <a href="#features"
-            class="inline-flex items-center px-4 py-2 border border-accent text-accent rounded hover:bg-accent hover:bg-opacity-8">Lihat
-            Fitur</a>
-        </div>
-      </div>
-
-      <div class="fade-in-section order-1 lg:order-2">
-        <div class="bg-primary rounded-2xl p-4 border border-slate/20 card-hover-effect overflow-hidden">
-          <img loading="lazy" src="img/img002.avif" alt="Ilustrasi edukasi"
-            class="w-full h-80 object-cover rounded-md" />
-        </div>
-        <div class="absolute -bottom-6 -right-6 bg-teal-600 text-white p-4 rounded-lg shadow-lg">
-          <div class="text-lg font-bold">Kewirausahaan,</div>
-          <div class="text-xs">dalam Genggaman!</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- BACKGROUND / WHY -->
-  <section id="why" class="py-20 px-4 sm:px-8 lg:px-20 bg-[#1a2a4a]">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-12 fade-in-section">
-        <h3 class="text-3xl font-bold text-light">
-          Mengapa <span class="text-accent">School Commerce</span> Diciptakan?
-        </h3>
-        <p class="text-slate max-w-2xl mx-auto mt-3">
-          School Commerce hadir sebagai jawaban atas tantangan pendidikan
-          modern, di mana masih banyak siswa yang belum siap menghadapi dunia
-          kerja dan kurang memahami dasar kewirausahaan.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="flex items-start space-x-4">
-            <div class="text-accent text-2xl">
-              <i class="fas fa-book-open"></i>
-            </div>
-            <div>
-              <h4 class="text-light font-medium">
-                Rendahnya literasi kewirausahaan siswa
-              </h4>
-              <p class="text-slate text-sm mt-2">
-                Kurikulum belum cukup memberi ruang praktik bisnis nyata di
-                sekolah.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="flex items-start space-x-4">
-            <div class="text-accent text-2xl">
-              <i class="fas fa-school"></i>
-            </div>
-            <div>
-              <h4 class="text-light font-medium">
-                Kurangnya wadah praktik bisnis
-              </h4>
-              <p class="text-slate text-sm mt-2">
-                Siswa butuh platform aman untuk mencoba jual-beli dalam skala
-                kecil.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="flex items-start space-x-4">
-            <div class="text-accent text-2xl">
-              <i class="fas fa-laptop-code"></i>
-            </div>
-            <div>
-              <h4 class="text-light font-medium">
-                Perlunya sistem digital edukatif
-              </h4>
-              <p class="text-slate text-sm mt-2">
-                Menyederhanakan manajemen transaksi dan pembelajaran berbasis
-                data.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- HOW IT WORKS -->
-  <section id="how" class="py-20 px-4 sm:px-8 lg:px-20 bg-[#112240]">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-10 fade-in-section">
-        <h3 class="text-3xl font-bold text-light">
-          Bagaimana <span class="text-accent">School Commerce</span> Bekerja?
-        </h3>
-        <p class="text-slate max-w-2xl mx-auto mt-3">
-          Langkah-langkah praktis untuk siswa dan guru agar pembelajaran
-          menjadi bagian dari aktivitas sehari-hari.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-        <div class="bg-primary rounded-2xl p-6 text-center fade-in-section card-hover-effect">
-          <div class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3">
-            <i class="fas fa-upload"></i>
-          </div>
-          <h4 class="text-light font-medium">1. Upload Produk</h4>
-          <p class="text-slate text-sm mt-2">
-            Siswa unggah foto & deskripsi produk.
-          </p>
-        </div>
-
-        <div class="bg-primary rounded-2xl p-6 text-center fade-in-section card-hover-effect">
-          <div class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3">
-            <i class="fas fa-user-check"></i>
-          </div>
-          <h4 class="text-light font-medium">2. Guru Verifikasi</h4>
-          <p class="text-slate text-sm mt-2">
-            Guru meninjau & menyetujui listing produk.
-          </p>
-        </div>
-
-        <div class="bg-primary rounded-2xl p-6 text-center fade-in-section card-hover-effect">
-          <div class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3">
-            <i class="fas fa-shopping-cart"></i>
-          </div>
-          <h4 class="text-light font-medium">3. Teman Memesan</h4>
-          <p class="text-slate text-sm mt-2">
-            Siswa lain dapat melihat & membeli produk.
-          </p>
-        </div>
-
-        <div class="bg-primary rounded-2xl p-6 text-center fade-in-section card-hover-effect">
-          <div class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3">
-            <i class="fas fa-file-invoice-dollar"></i>
-          </div>
-          <h4 class="text-light font-medium">4. Transaksi Otomatis</h4>
-          <p class="text-slate text-sm mt-2">
-            Sistem mencatat transaksi dan laporan otomatis.
-          </p>
-        </div>
-
-        <div class="bg-primary rounded-2xl p-6 text-center fade-in-section card-hover-effect">
-          <div class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3">
-            <i class="fas fa-chalkboard-teacher"></i>
-          </div>
-          <h4 class="text-light font-medium">5. Guru Memantau</h4>
-          <p class="text-slate text-sm mt-2">
-            Guru menilai laporan & memberi feedback.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURES -->
-  <section id="features" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary/20">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-10 fade-in-section">
-        <h3 class="text-3xl font-bold text-light">
-          Fitur Utama yang Membuat
-          <span class="text-accent">School Commerce</span> Berbeda
-        </h3>
-        <p class="text-slate max-w-2xl mx-auto mt-3">
-          Fitur yang dirancang untuk pembelajaran praktis dan aman di
-          lingkungan sekolah.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="text-accent text-3xl mb-4">
-            <i class="fas fa-store"></i>
-          </div>
-          <h4 class="text-light font-medium mb-2">Jual Beli Antar Siswa</h4>
-          <p class="text-slate text-sm">
-            Marketplace internal sekolah yang aman dan mudah digunakan.
-          </p>
-        </div>
-
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="text-accent text-3xl mb-4">
-            <i class="fas fa-receipt"></i>
-          </div>
-          <h4 class="text-light font-medium mb-2">
-            Pencatatan Transaksi Otomatis
-          </h4>
-          <p class="text-slate text-sm">
-            Semua transaksi terekam otomatis untuk analisis keuangan.
-          </p>
-        </div>
-
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="text-accent text-3xl mb-4">
-            <i class="fas fa-brain"></i>
-          </div>
-          <h4 class="text-light font-medium mb-2">Pembelajaran Terpadu</h4>
-          <p class="text-slate text-sm">
-            Menggabungkan teori & praktik kewirausahaan dalam satu sistem.
-          </p>
-        </div>
-
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="text-accent text-3xl mb-4">
-            <i class="fas fa-lock"></i>
-          </div>
-          <h4 class="text-light font-medium mb-2">
-            Lingkungan Aman & Terverifikasi
-          </h4>
-          <p class="text-slate text-sm">
-            Semua aktivitas dipantau oleh guru sebagai pembimbing.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ADVANTAGES -->
-  <section id="advantages" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-10 fade-in-section">
-        <h3 class="text-3xl font-bold text-light">
-          Mengapa Memilih <span class="text-accent">School Commerce</span>?
-        </h3>
-        <p class="text-slate max-w-2xl mx-auto mt-3">
-          Keunggulan yang membantu siswa dan sekolah beradaptasi dengan
-          ekonomi digital.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <h4 class="text-accent font-semibold mb-2">Praktis & Aman</h4>
-          <p class="text-slate text-sm">
-            Transaksi dilakukan dalam lingkungan sekolah yang terkontrol.
-          </p>
-        </div>
-
-        <div class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <h4 class="text-accent font-semibold mb-2">Edukatif</h4>
-          <p class="text-slate text-sm">
-            Siswa belajar teori sekaligus praktik bisnis nyata.
-          </p>
-        </div>
-
-        <div class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <h4 class="text-accent font-semibold mb-2">
-            Relevan di Era Digital
-          </h4>
-          <p class="text-slate text-sm">
-            Membekali siswa dengan keterampilan bisnis masa depan.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- IMPACT -->
-  <section id="impact" class="py-32 px-4 sm:px-8 lg:px-20 bg-primary">
-    <div class="max-w-6xl mx-auto text-center">
-      <h3 class="text-3xl font-bold text-light mb-4">
-        Dampak Nyata untuk Siswa & Sekolah
-      </h3>
-      <p class="text-slate max-w-2xl mx-auto mb-8">
-        Implementasi School Commerce mendorong perubahan positif jangka
-        panjang.
+      <!-- Overlay Latar Belakang -->
+        <div id="overlay"
+        class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity duration-300">
+        
+      <!-- Papan Informasi -->
+      <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 rounded-xl shadow-xl p-6 max-w-md w-11/12 text-center transform scale-95 transition-transform duration-300">
+      <h3 class="text-lg font-semibold mb-2">Informasi Bahasa</h3>
+      <p class="text-sm text-gray-600 dark:text-gray-300 mb-4">
+        Halaman ini berbahasa <span class="font-bold text-indigo-500">INDONESIA</span>.  
+        Silakan gunakan fitur <em>Translate</em> di browser Anda bila diperlukan.
       </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-secondary rounded-2xl p-6 fade-in-section">
-          <div class="text-4xl mb-3">🎓</div>
-          <h4 class="text-light font-medium mb-2">
-            Siswa Siap Kerja & Mandiri
-          </h4>
-          <p class="text-slate text-sm">
-            Membentuk pola pikir wirausaha sejak dini.
-          </p>
-        </div>
-
-        <div class="bg-secondary rounded-2xl p-6 fade-in-section">
-          <div class="text-4xl mb-3">🏫</div>
-          <h4 class="text-light font-medium mb-2">Sekolah Lebih Efektif</h4>
-          <p class="text-slate text-sm">
-            Pembelajaran kewirausahaan jadi menarik & terukur.
-          </p>
-        </div>
-
-        <div class="bg-secondary rounded-2xl p-6 fade-in-section">
-          <div class="text-4xl mb-3">💰</div>
-          <h4 class="text-light font-medium mb-2">Dampak Ekonomi Positif</h4>
-          <p class="text-slate text-sm">
-            Mendorong ekonomi kreatif lokal dari lingkungan sekolah.
-          </p>
-        </div>
+      <button id="closePopup"
+              class="mt-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition">
+        Mengerti
+      </button>
       </div>
-    </div>
-  </section>
-
-  <!-- WHO USES -->
-  <section id="who" class="py-20 px-4 sm:px-8 lg:px-20">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-10 fade-in-section">
-        <h3 class="text-3xl font-bold text-light">
-          Siapa yang Menggunakan
-          <span class="text-accent">School Commerce</span>?
-        </h3>
-        <p class="text-slate max-w-2xl mx-auto mt-3">
-          Platform ini dirancang untuk peran kunci di lingkungan sekolah.
-        </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="flex items-start space-x-4">
-            <div class="text-3xl text-accent">
-              <i class="fas fa-user-graduate"></i>
+    <!-- Particles background -->
+    <div
+      id="particles-js"
+      class="absolute inset-0 overflow-hidden pointer-events-none"
+    ></div>
+
+    <!-- NAV -->
+    <nav class="relative z-40 py-6 px-4 sm:px-8 lg:px-20">
+      <div class="max-w-6xl mx-auto flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div
+            class="w-10 h-10 rounded-full bg-accent flex items-center justify-center"
+            aria-hidden="true"
+          >
+            <i class="fas fa-shopping-bag text-primary text-lg"></i>
+          </div>
+          <div>
+            <span class="text-light text-2xl font-bold"
+              >School<span class="text-accent">Commerce</span></span
+            >
+          </div>
+        </div>
+
+        <div class="hidden lg:flex items-center space-x-8 text-slate">
+          <a href="#home" class="hover:text-accent transition">Home</a>
+          <a href="#about" class="hover:text-accent transition">About</a>
+          <a href="#features" class="hover:text-accent transition">Fitur</a>
+          <a href="#how" class="hover:text-accent transition">Cara Kerja</a>
+          <a href="#team" class="hover:text-accent transition">Team</a>
+          <a href="#contact" class="hover:text-accent transition">Contact</a>
+          <a
+            href="#cta"
+            class="ml-3 bg-accent text-white dark:text-primary px-4 py-2 rounded font-medium glow-on-hover"
+            >Coba Sekarang</a
+          >
+        </div>
+
+        <!-- Right controls: theme toggle + mobile menu button -->
+        <div class="nav-right-controls">
+          <!-- Theme toggle button (icon only) -->
+          <button id="themeToggle" class="text-accent text-xl focus:outline-none" aria-label="Toggle tema" title="Toggle tema">
+            <div class="p-4 border-2 border-gray-900 dark:border-gray-200 rounded-md background-gray-900">
+              <i id="themeIcon" class="fas fa-moon"></i>
             </div>
-            <div>
-              <h4 class="text-light font-medium">Siswa</h4>
-              <p class="text-slate text-sm mt-2">
-                Penjual & pembeli yang belajar mengelola bisnis dari skala
-                kecil.
-              </p>
+          </button>
+
+          <!-- Mobile menu button -->
+          <button
+            id="mobileToggle"
+            class="lg:hidden text-light"
+            aria-label="Buka menu"
+          >
+            <i class="fas fa-bars text-2xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile menu (hidden by default) -->
+      <div id="mobileMenu" class="hidden lg:hidden mt-4 max-w-6xl mx-auto px-2">
+        <div class="bg-secondary/40 rounded-lg p-4 space-y-3 text-slate">
+          <a href="#home" class="block">Home</a>
+          <a href="#about" class="block">About</a>
+          <a href="#features" class="block">Fitur</a>
+          <a href="#how" class="block">Cara Kerja</a>
+          <a href="#team" class="block">Team</a>
+          <a href="#contact" class="block">Contact</a>
+          <a
+            href="#cta"
+            class="block bg-accent text-white dark:text-primary px-4 py-2 rounded mt-2 text-center"
+            >Coba Sekarang</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header
+      id="home"
+      class="relative min-h-screen flex items-center py-12 bg-primary overflow-hidden"
+    >
+      <div
+        class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center px-4 sm:px-8 lg:px-20 z-10"
+      >
+        <div class="fade-in-section order-2 md:order-1">
+            <h1
+              class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-1"
+            >
+              SOLUSI <span class="text-accent">INOVATIF</span>
+            </h1>
+            <h1
+              class="text-4xl md:text-4xl lg:text-4xl font-bold leading-tight mb-1"
+            >
+              untuk Pendidikan
+            </h1>
+            <h1 class="text-4xl font-bold leading-tight mb-1 text-accent">
+              Kewirausahaan <span class="text-5xl">DIGITAL</span>
+            </h1>
+          </h1>
+          <p class="text-slate text-lg mb-6 max-w-xl">
+            Platform e-commerce berbasis web yang dirancang khusus untuk siswa
+            agar dapat belajar, berwirausaha, dan bertransaksi secara digital
+            dalam lingkungan sekolah yang aman, praktis, dan edukatif.
+          </p>
+          <div class="flex sm:flex-wrap gap-3">
+            <a
+              href="#cta"
+              class="bg-accent text-white dark:text-primary px-6 py-3 rounded text-sm sm:font-medium sm:text-base glow-on-hover"
+              >Coba Sekarang</a
+            >
+            <a
+              href="#about"
+              class="border border-accent text-accent px-6 py-3 rounded text-sm sm:font-medium sm:text-base hover:bg-accent hover:bg-opacity-10 transition"
+              >Tentang Kami</a
+            >
+          </div>
+
+          <div class="mt-8 text-slate text-sm max-w-md">
+            <div class="flex items-center space-x-3">
+              <i class="fas fa-check-circle text-accent"></i>
+              <span>Lingkungan transaksi aman, terverifikasi oleh guru</span>
+            </div>
+            <div class="flex items-center space-x-3 mt-3">
+              <i class="fas fa-check-circle text-accent"></i>
+              <span
+                >Pencatatan transaksi otomatis untuk pembelajaran akuntansi
+                sederhana</span
+              >
             </div>
           </div>
         </div>
 
-        <div class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section">
-          <div class="flex items-start space-x-4">
-            <div class="text-3xl text-accent">
+        <div class="relative">
+          <div
+            class="absolute -top-16 -left-16 w-56 h-56 rounded-full bg-accent/10 blur-3xl"
+          ></div>
+          <div
+            class="w-full h-96 bg-primary p-4 rounded-2xl border border-slate/20 overflow-hidden flex items-center justify-center card-hover-effect order-1 md:order-2"
+          >
+              <img
+                loading="lazy"
+                src="img/img001.avif"
+                alt="Mockup School Commerce"
+                class="w-full h-full object-cover rounded-md"
+              />
+          </div>
+            <div class="absolute -bottom-6 -left-6 bg-teal-600 text-white p-4 rounded-lg shadow-lg">
+              <div class="text-lg font-bold">Belajar Bisnis,</div>
+              <div class="text-xs">Mulai dari Sekolah!</div>
+            </div>
+            <div class="absolute -bottom-16 -right-16 w-56 h-56 rounded-full bg-accent/10 -z-10 blur-3xl"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary overflow-hidden">
+      <div
+        class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center"
+      >
+        <div class="fade-in-section order-2 lg:order-1">
+          <h2 class="text-3xl font-bold text-light mb-4">
+            Apa itu <br><span class="text-accent text-4xl">School Commerce</span> ?
+          </h2>
+          <p class="text-slate mb-4">
+            School Commerce adalah aplikasi e-commerce edukatif berbasis web
+            yang memungkinkan siswa melakukan jual beli produk antar teman di
+            lingkungan sekolah. Dibangun dengan Laravel 12, HTML, CSS, dan
+            JavaScript, aplikasi ini memadukan pembelajaran teori kewirausahaan
+            dengan praktik langsung secara digital dan interaktif.
+          </p>
+          <p class="text-accent font-medium italic">
+            “SCHOOL COMMERCE – Solusi Inovatif untuk Pendidikan Kewirausahaan
+            Digital”
+          </p>
+          <div class="mt-6 flex space-x-3">
+            <a
+              href="#how"
+              class="inline-flex items-center px-4 py-2 bg-accent text-white dark:text-primary rounded"
+              >Mulai Belajar</a
+            >
+            <a
+              href="#features"
+              class="inline-flex items-center px-4 py-2 border border-accent text-accent rounded hover:bg-accent hover:bg-opacity-8"
+              >Lihat Fitur</a
+            >
+          </div>
+        </div>
+
+        <div class="fade-in-section order-1 lg:order-2">
+          <div
+            class="bg-primary rounded-2xl p-4 border border-slate/20 card-hover-effect overflow-hidden"
+          >
+            <img
+              loading="lazy"
+              src="img/img002.avif"
+              alt="Ilustrasi edukasi"
+              class="w-full h-80 object-cover rounded-md"
+            />
+          </div>
+          <div class="absolute -bottom-6 -right-6 bg-teal-600 text-white p-4 rounded-lg shadow-lg">
+            <div class="text-lg font-bold">Kewirausahaan,</div>
+            <div class="text-xs">dalam Genggaman!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BACKGROUND / WHY -->
+    <section id="why" class="py-20 px-4 sm:px-8 lg:px-20 bg-primary">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12 fade-in-section">
+          <h3 class="text-3xl font-bold text-light">
+            Mengapa <span class="text-accent">School Commerce</span> Diciptakan?
+          </h3>
+          <p class="text-slate max-w-2xl mx-auto mt-3">
+            School Commerce hadir sebagai jawaban atas tantangan pendidikan
+            modern, di mana masih banyak siswa yang belum siap menghadapi dunia
+            kerja dan kurang memahami dasar kewirausahaan.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 fade-in-section">
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect glow-on-hover"
+          >
+            <div class="flex items-start space-x-4">
+              <div class="text-accent text-2xl">
+                <i class="fas fa-book-open"></i>
+              </div>
+              <div>
+                <h4 class="text-light font-medium">
+                  Rendahnya literasi kewirausahaan siswa
+                </h4>
+                <p class="text-slate text-sm mt-2">
+                  Kurikulum belum cukup memberi ruang praktik bisnis nyata di
+                  sekolah.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect glow-on-hover"
+          >
+            <div class="flex items-start space-x-4">
+              <div class="text-accent text-2xl">
+                <i class="fas fa-school"></i>
+              </div>
+              <div>
+                <h4 class="text-light font-medium">
+                  Kurangnya wadah praktik bisnis
+                </h4>
+                <p class="text-slate text-sm mt-2">
+                  Siswa butuh platform aman untuk mencoba jual-beli dalam skala
+                  kecil.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect glow-on-hover"
+          >
+            <div class="flex items-start space-x-4">
+              <div class="text-accent text-2xl">
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <div>
+                <h4 class="text-light font-medium">
+                  Perlunya sistem digital edukatif
+                </h4>
+                <p class="text-slate text-sm mt-2">
+                  Menyederhanakan manajemen transaksi dan pembelajaran berbasis
+                  data.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10 fade-in-section">
+          <h3 class="text-3xl font-bold text-light">
+            Bagaimana <span class="text-accent">School Commerce</span> Bekerja?
+          </h3>
+          <p class="text-slate max-w-2xl mx-auto mt-3">
+            Langkah-langkah praktis untuk siswa dan guru agar pembelajaran
+            menjadi bagian dari aktivitas sehari-hari.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+          <div
+            class="bg-primary rounded-2xl p-6 text-center card-hover-effect glow-on-hover"
+          >
+            <div
+              class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3"
+            >
+              <i class="fas fa-upload"></i>
+            </div>
+            <h4 class="text-light font-medium">1. Upload Produk</h4>
+            <p class="text-slate text-sm mt-2">
+              Siswa unggah foto & deskripsi produk.
+            </p>
+          </div>
+
+          <div
+            class="bg-primary rounded-2xl p-6 text-center card-hover-effect glow-on-hover"
+          >
+            <div
+              class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3"
+            >
+              <i class="fas fa-user-check"></i>
+            </div>
+            <h4 class="text-light font-medium">2. Guru Verifikasi</h4>
+            <p class="text-slate text-sm mt-2">
+              Guru meninjau & menyetujui listing produk.
+            </p>
+          </div>
+
+          <div
+            class="bg-primary rounded-2xl p-6 text-center card-hover-effect glow-on-hover"
+          >
+            <div
+              class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3"
+            >
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h4 class="text-light font-medium">3. Teman Memesan</h4>
+            <p class="text-slate text-sm mt-2">
+              Siswa lain dapat melihat & membeli produk.
+            </p>
+          </div>
+
+          <div
+            class="bg-primary rounded-2xl p-6 text-center card-hover-effect glow-on-hover"
+          >
+            <div
+              class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3"
+            >
+              <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <h4 class="text-light font-medium">4. Transaksi Otomatis</h4>
+            <p class="text-slate text-sm mt-2">
+              Sistem mencatat transaksi dan laporan otomatis.
+            </p>
+          </div>
+
+          <div
+            class="bg-primary rounded-2xl p-6 text-center card-hover-effect glow-on-hover"
+          >
+            <div
+              class="w-12 h-12 mx-auto rounded-full bg-accent/10 text-accent flex items-center justify-center mb-3"
+            >
               <i class="fas fa-chalkboard-teacher"></i>
             </div>
-            <div>
-              <h4 class="text-light font-medium">Guru</h4>
-              <p class="text-slate text-sm mt-2">
-                Pembimbing & evaluator yang memantau serta menilai kegiatan
-                bisnis siswa.
-              </p>
+            <h4 class="text-light font-medium">5. Guru Memantau</h4>
+            <p class="text-slate text-sm mt-2">
+              Guru menilai laporan & memberi feedback.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="py-20 px-4 sm:px-8 lg:px-20 bg-primary">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10 fade-in-section">
+          <h3 class="text-3xl font-bold text-light">
+            Fitur Utama yang Membuat
+            <span class="text-accent">School Commerce</span> Berbeda 
+          </h3>
+          <p class="text-slate max-w-2xl mx-auto mt-3">
+            Fitur yang dirancang untuk pembelajaran praktis dan aman di
+            lingkungan sekolah.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <div class="text-accent text-3xl mb-4">
+              <i class="fas fa-store"></i>
+            </div>
+            <h4 class="text-light font-medium mb-2">Jual Beli Antar Siswa</h4>
+            <p class="text-slate text-sm">
+              Marketplace internal sekolah yang aman dan mudah digunakan.
+            </p>
+          </div>
+
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <div class="text-accent text-3xl mb-4">
+              <i class="fas fa-receipt"></i>
+            </div>
+            <h4 class="text-light font-medium mb-2">
+              Pencatatan Transaksi Otomatis
+            </h4>
+            <p class="text-slate text-sm">
+              Semua transaksi terekam otomatis untuk analisis keuangan.
+            </p>
+          </div>
+
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <div class="text-accent text-3xl mb-4">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h4 class="text-light font-medium mb-2">Pembelajaran Terpadu</h4>
+            <p class="text-slate text-sm">
+              Menggabungkan teori & praktik kewirausahaan dalam satu sistem.
+            </p>
+          </div>
+
+          <div
+            class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <div class="text-accent text-3xl mb-4">
+              <i class="fas fa-lock"></i>
+            </div>
+            <h4 class="text-light font-medium mb-2">
+              Lingkungan Aman & Terverifikasi
+            </h4>
+            <p class="text-slate text-sm">
+              Semua aktivitas dipantau oleh guru sebagai pembimbing.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADVANTAGES -->
+    <section id="advantages" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10 fade-in-section">
+          <h3 class="text-3xl font-bold text-light">
+            Mengapa Memilih <span class="text-accent">School Commerce</span>?
+          </h3>
+          <p class="text-slate max-w-2xl mx-auto mt-3">
+            Keunggulan yang membantu siswa dan sekolah beradaptasi dengan
+            ekonomi digital.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div
+            class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <h4 class="text-accent font-semibold mb-2">Praktis & Aman</h4>
+            <p class="text-slate text-sm">
+              Transaksi dilakukan dalam lingkungan sekolah yang terkontrol.
+            </p>
+          </div>
+
+          <div
+            class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <h4 class="text-accent font-semibold mb-2">Edukatif</h4>
+            <p class="text-slate text-sm">
+                Siswa belajar teori sekaligus praktik bisnis nyata.
+            </p>
+          </div>
+
+          <div
+            class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <h4 class="text-accent font-semibold mb-2">
+              Relevan di Era Digital
+            </h4>
+            <p class="text-slate text-sm">
+              Membekali siswa dengan keterampilan bisnis masa depan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMPACT -->
+    <section id="impact" class="py-32 px-4 sm:px-8 lg:px-20 bg-primary">
+      <div class="max-w-6xl mx-auto text-center">
+        <h3 class="text-3xl font-bold text-light mb-4">
+          Dampak Nyata untuk Siswa & Sekolah
+        </h3>
+        <p class="text-slate max-w-2xl mx-auto mb-8">
+          Implementasi School Commerce mendorong perubahan positif jangka
+          panjang.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-secondary rounded-2xl p-6 fade-in-section">
+            <div class="text-4xl mb-3">🎓</div>
+            <h4 class="text-light font-medium mb-2">
+              Siswa Siap Kerja & Mandiri
+            </h4>
+            <p class="text-slate text-sm">
+              Membentuk pola pikir wirausaha sejak dini.
+            </p>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 fade-in-section">
+            <div class="text-4xl mb-3">🏫</div>
+            <h4 class="text-light font-medium mb-2">Sekolah Lebih Efektif</h4>
+            <p class="text-slate text-sm">
+              Pembelajaran kewirausahaan jadi menarik & terukur.
+            </p>
+          </div>
+
+          <div class="bg-secondary rounded-2xl p-6 fade-in-section">
+            <div class="text-4xl mb-3">💰</div>
+            <h4 class="text-light font-medium mb-2">Dampak Ekonomi Positif</h4>
+            <p class="text-slate text-sm">
+              Mendorong ekonomi kreatif lokal dari lingkungan sekolah.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHO USES -->
+    <section id="who" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10 fade-in-section">
+          <h3 class="text-3xl font-bold text-light">
+            Siapa yang Menggunakan
+            <span class="text-accent">School Commerce</span>?
+          </h3>
+          <p class="text-slate max-w-2xl mx-auto mt-3">
+            Platform ini dirancang untuk peran kunci di lingkungan sekolah.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <div class="flex items-start space-x-4">
+              <div class="text-3xl text-accent">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <div>
+                <h4 class="text-light font-medium">Siswa</h4>
+                <p class="text-slate text-sm mt-2">
+                  Penjual & pembeli yang belajar mengelola bisnis dari skala
+                  kecil.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="bg-primary/60 rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <div class="flex items-start space-x-4">
+              <div class="text-3xl text-accent">
+                <i class="fas fa-chalkboard-teacher"></i>
+              </div>
+              <div>
+                <h4 class="text-light font-medium">Guru</h4>
+                <p class="text-slate text-sm mt-2">
+                  Pembimbing & evaluator yang memantau serta menilai kegiatan
+                  bisnis siswa.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- TECHNOLOGY -->
-  <section id="tech" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-      <div class="fade-in-section">
-        <h3 class="text-3xl font-bold text-light mb-4">
-          Teknologi di Balik <span class="text-accent">School Commerce</span>
-        </h3>
-        <p class="text-slate mb-4">
-          Dibangun menggunakan Laravel 12, HTML, CSS, dan JavaScript, aplikasi
-          ini menghadirkan tampilan responsif, performa tinggi, dan sistem
-          keamanan yang terjamin — menjadikan pengalaman belajar dan
-          bertransaksi menjadi efisien dan modern.
-        </p>
+    <!-- TECHNOLOGY -->
+    <section id="tech" class="py-20 px-4 sm:px-8 lg:px-20 bg-primary">
+      <div
+        class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+      >
+        <div class="fade-in-section">
+          <h3 class="text-3xl font-bold text-light mb-4">
+            Teknologi di Balik <span class="text-accent">School Commerce</span>
+          </h3>
+          <p class="text-slate mb-4">
+            Dibangun menggunakan Laravel 12, HTML, CSS, dan JavaScript, aplikasi
+            ini menghadirkan tampilan responsif, performa tinggi, dan sistem
+            keamanan yang terjamin — menjadikan pengalaman belajar dan
+            bertransaksi menjadi efisien dan modern.
+          </p>
 
-        <div class="flex flex-wrap gap-3 mt-4">
-          <span class="px-3 py-2 rounded bg-accent/10 text-accent">Laravel 12</span>
-          <span class="px-3 py-2 rounded bg-accent/10 text-accent">HTML</span>
-          <span class="px-3 py-2 rounded bg-accent/10 text-accent">CSS</span>
-          <span class="px-3 py-2 rounded bg-accent/10 text-accent">JavaScript</span>
+          <div class="flex flex-wrap gap-3 mt-4">
+            <span class="px-3 py-2 rounded bg-accent/10 text-accent"
+              >Laravel 12</span
+            >
+            <span class="px-3 py-2 rounded bg-accent/10 text-accent">HTML</span>
+            <span class="px-3 py-2 rounded bg-accent/10 text-accent">CSS</span>
+            <span class="px-3 py-2 rounded bg-accent/10 text-accent"
+              >JavaScript</span
+            >
+          </div>
+        </div>
+
+        <div class="fade-in-section">
+          <div class="bg-primary rounded-2xl p-4 border border-slate/20">
+            <img
+              loading="lazy"
+              src="./img/laravelimg.jpg"
+              alt="Teknologi"
+              class="w-full object-cover rounded-md"
+            />
+          </div>
         </div>
       </div>
+    </section>
 
-      <div class="fade-in-section">
-        <div class="bg-primary rounded-2xl p-4 border border-slate/20">
-          <img loading="lazy" src="img/img002.avif" alt="Teknologi" class="w-full h-64 object-cover rounded-md" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- TEAM -->
-  <section id="team" class="py-20 px-4 sm:px-8 lg:px-20 bg-primary">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-10 fade-in-section">
-        <h3 class="text-3xl font-bold text-light">
-          Tim Pengembang <span class="text-accent">School Commerce</span>
-        </h3>
-        <p class="text-slate max-w-2xl mx-auto mt-3">
-          Proyek ini dikembangkan oleh mahasiswa Universitas Teknologi Digital
-          Indonesia.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Team member 1 -->
-        <div class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <img loading="lazy" src="img/person.jpg" alt="Rama Jiansyah"
-            class="w-36 h-36 rounded-xl object-cover mx-auto mb-4" />
-          <h4 class="text-light font-medium text-center">Rama Jiansyah</h4>
-          <p class="text-accent text-sm text-center mb-2">
-            Team Leader & Database Designer
-          </p>
-          <p class="text-slate text-sm text-center">
-            Memimpin arsitektur data dan desain basis data aplikasi.
+    <!-- TEAM -->
+    <section id="team" class="py-20 px-4 sm:px-8 lg:px-20 bg-secondary">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-10 fade-in-section">
+          <h3 class="text-3xl font-bold text-light">
+            Tim Pengembang <span class="text-accent">School Commerce</span>
+          </h3>
+          <p class="text-slate max-w-2xl mx-auto mt-3">
+            Proyek ini dikembangkan oleh mahasiswa Universitas Teknologi Digital
+            Indonesia.
           </p>
         </div>
 
-        <!-- Team member 2 -->
-        <div class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <img loading="lazy" src="img/person.jpg" alt="Xavier Christian Rihi"
-            class="w-36 h-36 rounded-xl object-cover mx-auto mb-4" />
-          <h4 class="text-light font-medium text-center">
-            Xavier Christian Rihi
-          </h4>
-          <p class="text-accent text-sm text-center mb-2">
-            Frontend Programmer
-          </p>
-          <p class="text-slate text-sm text-center">
-            Mengembangkan antarmuka responsif dan interaksi pengguna.
-          </p>
+        <!-- MAIN DIV -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+          <!-- PROGGRAMER DESKTOP & PHONE -->
+          <!-- Team member 1 -->
+          <div
+            class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <img
+              loading="lazy"
+              src="img/1. Rama_Jiansyah.avif"
+              alt="Rama Jiansyah"
+              class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+            />
+            <h4 class="text-light font-medium text-center">Rama Jiansyah</h4>
+            <p class="text-accent text-sm text-center mb-2">
+              Team Leader & Database Designer
+            </p>
+            <p class="text-slate text-sm text-center">
+              Semangat, ya! Soalnya dunia butuh senyummu biar makin terang ☀️💖
+            </p>
+          </div>
+
+          <!-- Team member 2 -->
+          <div
+            class="bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <img
+                
+              loading="lazy"
+              src="img/2. Xavier_Christian_Rihi.avif"
+              alt="Xavier Christian Rihi"
+              class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+            />
+            <h4 class="text-light font-medium text-center">
+              Xavier Christian Rihi
+            </h4>
+            <p class="text-accent text-sm text-center mb-2">
+              Frontend Programmer
+            </p>
+            <p class="text-slate text-sm text-center">
+              Hari ini capek boleh, tapi ingat, ada aku yang siap jadi alasan kamu tetap kuat ☕💘
+            </p>
+          </div>
+
+          <!-- Team member 3 -->
+          <div
+            class="block md:hidden lg:block bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+            <img
+              loading="lazy"
+              src="img/3.Hidayah_Adyan_Tokan.avif"
+              alt="Hidayah_Adyan_Tokan"
+              class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+            />
+            <h4 class="text-light font-medium text-center">Hidayah Adyan Tokan</h4>
+            <p class="text-accent text-sm text-center mb-2">
+              Backend Programmer
+            </p>
+            <p class="text-slate text-sm text-center">
+              Kopi aja bisa pahit tapi bikin nagih, apalagi semangat yang manisnya kayak kamu 💪💞
+            </p>
+          </div>
         </div>
 
-        <!-- Team member 3 -->
-        <div class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <img loading="lazy" src="img/person.jpg" alt="Muhammad Tokan"
-            class="w-36 h-36 rounded-xl object-cover mx-auto mb-4" />
-          <h4 class="text-light font-medium text-center">Muhammad Tokan</h4>
+          <!-- OUT OF GRID TABLET -->
+          <!-- Team member 3 -->
+          <div
+          class="hidden md:block lg:hidden bg-primary rounded-2xl p-6 card-hover-effect fade-in-section max-w-sm mx-auto mb-4"
+        >
+          <img
+            loading="lazy"
+            src="img/3.Hidayah_Adyan_Tokan.avif"
+            alt="Muhammad_Fadil_Akmal_Hafiz"
+            class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+          />
+          <h4 class="text-light font-medium text-center">Hidayah Adyan Tokan</h4>
           <p class="text-accent text-sm text-center mb-2">
             Backend Programmer
           </p>
           <p class="text-slate text-sm text-center">
-            Mengelola logika server dan integrasi sistem.
+            Kopi aja bisa pahit tapi bikin nagih, apalagi semangat yang manisnya kayak kamu 💪💞
           </p>
         </div>
 
-        <!-- Team member 4 -->
-        <div class="bg-secondary rounded-2xl p-6 card-hover-effect fade-in-section">
-          <img loading="lazy" src="img/person.jpg" alt="Research Team"
-            class="w-36 h-36 rounded-xl object-cover mx-auto mb-4" />
-          <h4 class="text-light font-medium text-center">
-            Research & Content
-          </h4>
-          <p class="text-accent text-sm text-center mb-2">
-            Muhammad Fadil, Nuraili Santini, Avina Tutrina
-          </p>
-          <p class="text-slate text-sm text-center">
-            Bertanggung jawab pada konten, riset, dan materi pembelajaran.
-          </p>
-        </div>
+
+          <!-- RESEARCH AND CONTENT PHONE -->
+          <div
+            class="block md:hidden bg-primary rounded-2xl p-6 card-hover-effect fade-in-section"
+          >
+
+          <h4 class="text-accent font-bold text-center text-2xl">RESEARCH & CONTENT</h4>
+          <p class="text-slate text-sm text-center mb-4">Bertanggung jawab pada konten, riset, dan materi pembelajaran.</p>
+            <!-- Team members 4 -->
+            <div>
+              <img
+                loading="lazy"
+                src="img/4. Wahidha_Vega_Noviana.avif"
+                alt="Muhammad Tokan"
+                class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+              />
+              <h4 class="text-light font-medium text-center">Wahidha Vega Noviana</h4>
+              <p class="text-slate text-sm text-center mb-8">
+                Kalau hari ini berat, biar aku aja yang bantu pikul—asal kamu bantu pikul rinduku juga 😏💓
+              </p>
+            </div>
+
+            <!-- Team members 5 -->
+            <div>
+              <img
+                loading="lazy"
+                src="img/5.Muhammad_Fadil_Akmal_Hafiz.avif"
+                alt="Muhammad Tokan"
+                class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+              />
+              <h4 class="text-light font-medium text-center">Muhammad Fadil Akmal Hafiz</h4>
+              <p class="text-slate text-sm text-center mb-8">
+                Bangun, dandan, dan bersinar! Soalnya semesta nggak lengkap tanpa pesonamu aktif 🌈🌻
+              </p>
+            </div>
+
+            <!-- Team members 6 -->
+            <div>
+              <img
+                loading="lazy"
+                src="img/6.Lorem, ipsum dolor.avif"
+                alt="Muhammad Tokan"
+                class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+              />
+              <h4 class="text-light font-medium text-center">Lorem, ipsum dolor</h4>
+              <p class="text-slate text-sm text-center mb-8">
+                Jangan nyerah ya, dunia belum siap lihat kamu secemerlang itu terus 💫💋
+              </p>
+            </div>
+          </div>
+
+        <!-- RESEARCH AND CONTENT DEKSTOP AND TABLET -->
+        <div
+          class="hidden md:block bg-primary rounded-2xl py-6 card-hover-effect fade-in-section"
+        >
+
+          <h4 class="text-accent font-bold text-center text-2xl">RESEARCH & CONTENT</h4>
+          <p class="text-slate text-sm text-center">Bertanggung jawab pada konten, riset, dan materi pembelajaran.</p>
+
+          <!-- Team members 4 -->
+          <div class="grid grid-cols-3 gap-6">
+            <div class="px-2 py-6">
+              <img
+                loading="lazy"
+                src="img/4. Wahidha_Vega_Noviana.avif"
+                alt="Research Team"
+                class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+              />
+              <h4 class="text-light font-medium text-center">Wahidha Vega Noviana</h4>
+              <p class="text-slate text-sm text-center mb-4">
+                Kalau hari ini berat, biar aku aja yang bantu pikul—asal kamu bantu pikul rinduku juga 😏💓
+              </p>
+            </div>
+
+          <!-- Team members 5 -->
+            <div class="px-2 py-6">
+              <img
+                loading="lazy"
+                alt="Research Team"
+                src="img/5.Muhammad_Fadil_Akmal_Hafiz.avif"
+                class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+              />
+              <p class="text-slate text-sm text-center mb-4">
+                <h4 class="text-light font-medium text-center">Muhammad Fadil Akmal Hafiz</h4>
+                Bangun, dandan, dan bersinar! Soalnya semesta nggak lengkap tanpa pesonamu aktif 🌈🌻
+              </p>
+            </div>
+
+          <!-- Team members 6 -->
+            <div class="px-2 py-6">
+              <img
+                loading="lazy"
+                alt="Research Team"
+                src="img/6.Lorem, ipsum dolor.avif"
+                class="w-36 h-36 rounded-xl object-cover mx-auto mb-4"
+              />
+              <p class="text-slate text-sm text-center mb-4">
+                <h4 class="text-light font-medium text-center">Lorem, ipsum dolor</h4>
+                Jangan nyerah ya, dunia belum siap lihat kamu secemerlang itu terus 💫💋
+              </p>
+            </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ABSTRACT / SUMMARY -->
-  <section id="abstract" class="py-16 px-4 sm:px-8 lg:px-20 bg-secondary/20">
-    <div class="max-w-4xl mx-auto text-center fade-in-section">
-      <h3 class="text-2xl font-bold text-light mb-4">
-        Inti dari <span class="text-accent">School Commerce</span>
-      </h3>
-      <p class="text-slate">
-        School Commerce adalah platform e-commerce edukatif berbasis web yang
-        berfungsi sebagai sarana pembelajaran dan praktik kewirausahaan
-        digital bagi siswa. Dengan fitur-fitur seperti verifikasi produk,
-        pencatatan transaksi otomatis, dan bimbingan guru, aplikasi ini
-        menggabungkan teori dan praktik bisnis dalam satu ekosistem
-        pembelajaran modern.
-      </p>
-    </div>
-  </section>
-
-  <!-- CTA + CONTACT -->
-  <section id="cta" class="py-16 px-4 sm:px-8 lg:px-20 bg-primary">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-      <div class="fade-in-section">
-        <h3 class="text-3xl font-bold text-light mb-4">
-          Bergabung dengan
-          <span class="text-accent">School Commerce</span> Sekarang!
+    <!-- ABSTRACT / SUMMARY -->
+    <section id="abstract" class="py-16 px-4 sm:px-8 lg:px-20 bg-primary">
+      <div class="max-w-4xl mx-auto text-center fade-in-section">
+        <h3 class="text-2xl font-bold text-light mb-4">
+          Inti dari <span class="text-accent">School Commerce</span>
         </h3>
-        <p class="text-slate mb-6">
-          Coba platform ini di sekolah Anda atau hubungi kami untuk demo dan
-          dukungan implementasi.
+        <p class="text-slate">
+          School Commerce adalah platform e-commerce edukatif berbasis web yang
+          berfungsi sebagai sarana pembelajaran dan praktik kewirausahaan
+          digital bagi siswa. Dengan fitur-fitur seperti verifikasi produk,
+          pencatatan transaksi otomatis, dan bimbingan guru, aplikasi ini
+          menggabungkan teori dan praktik bisnis dalam satu ekosistem
+          pembelajaran modern.
         </p>
-        <div class="flex gap-3">
-          <a href="#" class="bg-accent text-primary px-6 py-3 rounded font-medium">Pelajari Lebih Lanjut</a>
-          <a href="#contact" class="border border-accent text-accent px-6 py-3 rounded">Hubungi Kami</a>
-        </div>
       </div>
+    </section>
 
-      <div class="fade-in-section">
-        <div class="bg-primary rounded-2xl p-6 border border-slate/20">
-          <h4 class="text-light font-medium mb-4">Kontak & Lokasi</h4>
-          <div class="space-y-3 text-slate">
-            <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                <i class="fas fa-map-marker-alt"></i>
+    <!-- CTA + CONTACT -->
+    <section id="cta" class="py-16 px-4 sm:px-8 lg:px-20 bg-secondary">
+      <div
+        class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 items-center"
+      >
+        <div class="fade-in-section">
+          <h3 class="text-3xl font-bold text-light mb-4">
+            Bergabung dengan
+            <span class="text-accent">School Commerce</span> Sekarang!
+          </h3>
+          <p class="text-slate mb-6">
+            Coba platform ini di sekolah Anda atau hubungi kami untuk demo dan
+            dukungan implementasi.
+          </p>
+          <div class="flex sm:flex-wrap gap-3">
+            <a
+              href="#"
+              class="bg-accent text-white dark:text-primary px-6 py-3 rounded font-medium text-sm sm:font-medium sm:text-base"
+              >Pelajari Lebih Lanjut</a
+            >
+            <a
+              href="#contact"
+              class="border border-accent text-accent px-6 py-3 rounded text-sm sm:font-medium sm:text-base"
+              >Hubungi Kami</a
+            >
+          </div>
+        </div>
+
+        <div class="fade-in-section">
+          <div class="bg-primary rounded-2xl p-6 border border-slate/20">
+            <h4 class="text-light font-medium mb-4">Kontak & Lokasi</h4>
+            <div class="space-y-3 text-slate">
+              <div class="flex items-start space-x-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"
+                >
+                  <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div>
+                  <div class="text-light font-medium">Kampus</div>
+                  <div class="text-sm">
+                    Universitas Teknologi Digital Indonesia
+                  </div>
+                </div>
               </div>
-              <div>
-                <div class="text-light font-medium">Kampus</div>
-                <div class="text-sm">
-                  Universitas Teknologi Digital Indonesia
+
+              <div class="flex items-start space-x-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"
+                >
+                  <i class="fas fa-envelope"></i>
+                </div>
+                <div>
+                  <div class="text-light font-medium">Email</div>
+                  <div class="text-sm">test@email.com</div>
+                </div>
+              </div>
+
+              <div class="flex items-start space-x-3">
+                <div
+                  class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent"
+                >
+                  <i class="fas fa-phone-alt"></i>
+                </div>
+                <div>
+                  <div class="text-light font-medium">Telepon</div>
+                  <div class="text-sm">+62 812 3456 7890</div>
                 </div>
               </div>
             </div>
 
-            <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                <i class="fas fa-envelope"></i>
-              </div>
-              <div>
-                <div class="text-light font-medium">Email</div>
-                <div class="text-sm">contact@schoolcommerce.example</div>
-              </div>
-            </div>
+            <form
+              class="mt-6"
+              id="contact-form"
+            >
+              <label class="text-slate text-sm">Nama</label>
+              <input
+                class="w-full mt-2 px-3 py-2 rounded input-field mb-2"
+                type="text"
+                placeholder="Nama Anda"
+                aria-label="Nama"
+                id="name"
+                required
+              />
 
-            <div class="flex items-start space-x-3">
-              <div class="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent">
-                <i class="fas fa-phone-alt"></i>
-              </div>
-              <div>
-                <div class="text-light font-medium">Telepon</div>
-                <div class="text-sm">+62 21 1234 5678</div>
-              </div>
-            </div>
+              <label class="text-slate text-sm mt-3">Pesan</label>
+              <textarea
+                class="w-full mt-2 px-3 py-2 rounded input-field"
+                rows="3"
+                placeholder="Tulis pesan anda di sini"
+                aria-label="Pesan"
+                id="pesan"
+              ></textarea>
+
+              <button
+                class="w-full mt-4 bg-accent text-white dark:text-primary px-4 py-2 rounded"
+                type="submit"
+              >
+              <i class="fa-brands fa-whatsapp px-2"></i> Kirim Pesan
+              </button>
+            </form>
           </div>
-
-          <form class="mt-6" action="#"
-            onsubmit="event.preventDefault(); alert('Form demo: akan terhubung ke backend nantinya.');">
-            <label class="text-slate text-sm">Nama</label>
-            <input class="w-full mt-2 px-3 py-2 rounded input-field" type="text" placeholder="Nama Anda"
-              aria-label="Nama" required />
-
-            <label class="text-slate text-sm mt-3">Email</label>
-            <input class="w-full mt-2 px-3 py-2 rounded input-field" type="email" placeholder="email@domain.com"
-              aria-label="Email" required />
-
-            <label class="text-slate text-sm mt-3">Pesan</label>
-            <textarea class="w-full mt-2 px-3 py-2 rounded input-field" rows="3"
-              placeholder="Sampaikan kebutuhan sekolah Anda" aria-label="Pesan"></textarea>
-
-            <button class="w-full mt-4 bg-accent text-primary px-4 py-2 rounded">
-              Kirim Pesan
-            </button>
-          </form>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- FOOTER -->
-  <footer class="py-12 px-4 sm:px-8 lg:px-20 bg-primary border-t border-slate/20">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div>
-          <div class="flex items-center space-x-3 mb-3">
-            <div class="w-10 h-10 rounded-full bg-accent flex items-center justify-center">
-              <i class="fas fa-shopping-bag text-primary"></i>
-            </div>
-            <div>
-              <div class="text-light font-bold">
-                SCHOOL<span class="text-accent">COMMERCE</span>
-              </div>
-              <div class="text-slate text-sm">
-                Solusi untuk edukasi kewirausahaan digital.
-              </div>
+    <!-- FOOTER -->
+    <footer
+      class="py-4 sm:px-8 lg:px-20 bg-primary"
+    >
+          <div class="fade-in-section">
+            <div class="flex flex-col items-center text-center">
+                <div class="text-light font-bold">
+                  SCHOOL<span class="text-accent">COMMERCE</span>
+                </div>
+                <div class="text-slate text-sm">
+                  Solusi untuk edukasi kewirausahaan digital. <br>
+                    © <span>2025</span> School Commerce. All rights
+                    reserved.
+                </div>
             </div>
           </div>
-        </div>
 
-        <div>
-          <h4 class="text-light font-medium mb-3">Navigasi</h4>
-          <ul class="text-slate space-y-2 text-sm">
-            <li><a href="#about" class="hover:text-accent">About</a></li>
-            <li><a href="#features" class="hover:text-accent">Fitur</a></li>
-            <li><a href="#how" class="hover:text-accent">Cara Kerja</a></li>
-            <li><a href="#team" class="hover:text-accent">Team</a></li>
-          </ul>
-        </div>
+    </footer>
 
-        <div>
-          <h4 class="text-light font-medium mb-3">Ikuti Kami</h4>
-          <div class="flex space-x-3 mb-3">
-            <a href="#"
-              class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-slate hover:text-accent"><i
-                class="fab fa-linkedin-in"></i></a>
-            <a href="#"
-              class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-slate hover:text-accent"><i
-                class="fab fa-twitter"></i></a>
-            <a href="#"
-              class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center text-slate hover:text-accent"><i
-                class="fab fa-github"></i></a>
-          </div>
-          <p class="text-slate text-sm">
-            © <span id="year">2025</span> School Commerce. All rights
-            reserved.
-          </p>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- SCRIPTS -->
-  <script>
-    // Set year
-    document.getElementById("year").textContent = new Date().getFullYear();
-
+    <!-- SCRIPTS -->
+    <script>
     window.addEventListener("load", function () {
         const loader = document.getElementById("loader");
         loader.style.opacity = "0";
         loader.style.pointerEvents = "none";
         setTimeout(() => loader.style.display = "none", 500);
-      });
-
-    // Mobile toggle
-    const mobileToggle = document.getElementById("mobileToggle");
-    const mobileMenu = document.getElementById("mobileMenu");
-    mobileToggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
     });
 
-    // Create lightweight particles
-    document.addEventListener("DOMContentLoaded", function () {
-      const container = document.getElementById("particles-js");
-      const count = 30;
-      for (let i = 0; i < count; i++) {
-        const p = document.createElement("div");
-        p.className = "particle";
-        const size = Math.random() * 2 + 1;
-        p.style.width = `${size}px`;
-        p.style.height = `${size}px`;
-        p.style.left = `${Math.random() * 100}%`;
-        p.style.top = `${Math.random() * 100}%`;
-        const dur = Math.random() * 30 + 10;
-        p.style.animation = `float ${dur}s ease-in-out ${Math.random() * 5
-          }s infinite`;
-        p.style.opacity = 0.5;
-        container.appendChild(p);
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const message = document.getElementById('pesan').value;
+
+            const phoneNumber = '6281287799219';
+            const whatsappMessage =
+            `Hey saya ${name}%0A` + // 1 kali enter
+            `Bisakah saya mendapatkan informasi terkait SCHOOL COMMERCE?%0A%0A` + // 2 kali enter
+            `${message}`;
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${whatsappMessage}`;
+
+
+            window.open(whatsappURL, '_blank');
+            });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const overlay = document.getElementById("overlay");
+      const closePopup = document.getElementById("closePopup");
+
+      // Munculkan popup setelah halaman dimuat
+      setTimeout(() => {
+        overlay.classList.remove("hidden");
+        setTimeout(() => {
+          overlay.querySelector("div").classList.remove("scale-95");
+        }, 50);
+      }, 500);
+
+      // Tutup popup saat tombol diklik
+      closePopup.addEventListener("click", () => {
+        overlay.querySelector("div").classList.add("scale-95");
+        setTimeout(() => overlay.classList.add("hidden"), 200);
+      });
+    });
+
+      // Mobile toggle
+      const mobileToggle = document.getElementById("mobileToggle");
+      const mobileMenu = document.getElementById("mobileMenu");
+      mobileToggle.addEventListener("click", () => {
+        mobileMenu.classList.toggle("hidden");
+      });
+
+      // Theme toggle (dark <-> light) with localStorage and smooth icon update
+      const themeToggle = document.getElementById("themeToggle");
+      const themeIcon = document.getElementById("themeIcon");
+
+      function applyTheme(theme) {
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.classList.remove("light");
+          themeIcon.classList.remove("fa-moon");
+          themeIcon.classList.add("fa-sun");
+        } else {
+          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.add("light");
+          themeIcon.classList.remove("fa-sun");
+          themeIcon.classList.add("fa-moon");
+        }
       }
 
-      // Intersection Observer for fade-in sections
-      const els = document.querySelectorAll(".fade-in-section");
-      const obs = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting)
-              entry.target.classList.add("is-visible");
+      // Initialize theme on load
+      (function () {
+        const stored = localStorage.getItem("theme");
+        if (stored === "dark" || stored === "light") {
+          applyTheme(stored);
+        } else {
+          // no stored preference -> follow system preference
+          const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          applyTheme(prefersDark ? "dark" : "light");
+        }
+      })();
+
+      // Toggle handler
+      themeToggle.addEventListener("click", () => {
+        const isDark = document.documentElement.classList.contains("dark");
+        const newTheme = isDark ? "light" : "dark";
+        applyTheme(newTheme);
+        localStorage.setItem("theme", newTheme);
+      });
+
+      // Create lightweight particles & other UI helpers
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("particles-js");
+        const count = 30;
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("div");
+          p.className = "particle";
+          const size = Math.random() * 2 + 1;
+          p.style.width = `${size}px`;
+          p.style.height = `${size}px`;
+          p.style.left = `${Math.random() * 100}%`;
+          p.style.top = `${Math.random() * 100}%`;
+          const dur = Math.random() * 30 + 10;
+          p.style.animation = `float ${dur}s ease-in-out ${Math.random() * 5}s infinite`;
+          p.style.opacity = 0.5;
+          container.appendChild(p);
+        }
+
+        // Intersection Observer for fade-in sections
+        const els = document.querySelectorAll(".fade-in-section");
+        const obs = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting)
+                entry.target.classList.add("is-visible");
+            });
+          },
+          { threshold: 0.12 }
+        );
+
+        els.forEach((e) => obs.observe(e));
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach((a) => {
+          a.addEventListener("click", function (e) {
+            const href = this.getAttribute("href");
+            if (href.length > 1) {
+              e.preventDefault();
+              const el = document.querySelector(href);
+              if (el)
+                window.scrollTo({ top: el.offsetTop - 72, behavior: "smooth" });
+              if (!mobileMenu.classList.contains("hidden"))
+                mobileMenu.classList.add("hidden");
+            }
           });
-        },
-        { threshold: 0.12 }
-      );
-
-      els.forEach((e) => obs.observe(e));
-
-      // Smooth scroll for anchor links
-      document.querySelectorAll('a[href^="#"]').forEach((a) => {
-        a.addEventListener("click", function (e) {
-          const href = this.getAttribute("href");
-          if (href.length > 1) {
-            e.preventDefault();
-            const el = document.querySelector(href);
-            if (el)
-              window.scrollTo({ top: el.offsetTop - 72, behavior: "smooth" });
-            if (!mobileMenu.classList.contains("hidden"))
-              mobileMenu.classList.add("hidden");
-          }
         });
       });
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
-
